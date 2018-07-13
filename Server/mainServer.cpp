@@ -8,13 +8,13 @@
  * File:   main.cpp
  * Author: Alice
  *
- * Created on July 7, 2018, 8:09 PM
+ * Created on July 10, 2018, 4:13 PM
  */
-//my libs
+//libs used
 #include <iostream>
 #include <string>
 #include <windows.h>
-//#include <thread>
+#include <thread>
 //#include <stack>
 #include <future>
 
@@ -75,7 +75,7 @@ void createHandles(){
     int i = 1;
     //for(int i = 0; i < 3; i++){  
     for(;;){
-        HANDLE h = CreateNamedPipe(myPipe, PIPE_ACCESS_DUPLEX, PIPE_TYPE_MESSAGE | PIPE_READMODE_MESSAGE | PIPE_WAIT, 3, BUFFSIZE, BUFFSIZE, 0, NULL);
+        HANDLE h = CreateNamedPipe(myPipe, PIPE_ACCESS_DUPLEX, PIPE_TYPE_MESSAGE | PIPE_READMODE_MESSAGE | PIPE_WAIT, PIPE_UNLIMITED_INSTANCES, BUFFSIZE, BUFFSIZE, 0, NULL);
         bool connected = false;
 
         if (h != INVALID_HANDLE_VALUE){

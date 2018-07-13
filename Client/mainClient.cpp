@@ -10,7 +10,7 @@
  *
  * Created on July 10, 2018, 3:49 PM
  */
-//mylibds
+//libs used
 #include <windows.h>
 #include <string>
 #include <iostream>
