@@ -17,6 +17,10 @@
 #include <thread>
 #include <stack>
 #include <vector>
+#include <json.hpp>
+
+
+using json = nlohmann::json;
 
 //other libs
 //#include <cstdlib>
@@ -38,6 +42,68 @@ const int max_instances = 5;
 thread pipeThreads[max_instances];
 stack<int> threadStack;
 
+vector<int> integers;
+vector<float> floats;
+vector<string> strings;
+
+int readMessages(string message){
+    auto jsonObject = json::parse(message);
+    
+    string type = jsonObject["type"].dump(4);
+    int method = jsonObject["methodCalled"];
+    //string object = jsonObject["object"].dump(4);
+   
+    
+    switch(method){
+        //Create object
+        case 1:
+        {
+            if(type == "i"){
+                int object = jsonObject["object"];
+                integers.push_back(object);
+                return integers.size() + 1;
+            }
+            else if(type == "f"){
+                float object = jsonObject["object"];
+                floats.push_back(object);
+                return floats.size() + 1;
+            }
+            else if(type == "s"){
+                string object = jsonObject["object"].dump(4);
+                strings.push_back(object);
+                return strings.size() + 1;
+            }
+        } 
+        
+    }
+        //Retrieve object
+        /*case 2:
+        {
+            break;
+        }
+        //Update object
+        case 3:
+        {
+            break;
+        }
+        //Delete object;
+        case 4:
+        {
+            break;
+        }
+    }
+    /*else if(type == "o"){
+         = jsonObject["object"].dump(4);
+    }*/
+    
+    
+   /* object[0] = "shape";
+    object[1] = "base";
+    object[2] = "height";
+    object[3] = "radius";
+   */
+ 
+}
 
 void serveClient(HANDLE h, int threadNumber){
     cout << "Serving client on thread " << threadNumber << "..."<< endl;
@@ -54,10 +120,11 @@ void serveClient(HANDLE h, int threadNumber){
     bool readMessage = ReadFile(h, pm, b*sizeof(char), bytesRead, NULL);
     if(readMessage) cout << "Message read!" << endl;
     else cout << "Failed to read message :(" << endl;
-
-
+    
     message = pm;
     cout << pm << endl;
+    
+    //readMessages(message)
 
     char x = 'y';
     bool writeACK = WriteFile(h, &x , sizeof(char), bytesWritten, NULL);

@@ -35,6 +35,11 @@
         <rebuildPropChanged>false</rebuildPropChanged>
       </toolsSet>
       <compileType>
+        <ccTool>
+          <incDir>
+            <pElem>C:/Users/Alice/Downloads/json-develop/single_include/nlohmann</pElem>
+          </incDir>
+        </ccTool>
       </compileType>
       <item path="mainServer.cpp" ex="false" tool="1" flavor2="0">
         <ccTool>

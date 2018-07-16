@@ -65,7 +65,7 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/server.exe: ${OBJECTFILES}
 ${OBJECTDIR}/mainServer.o: mainServer.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/cygdrive/C/Users/Alice/Downloads/json-develop/single_include/nlohmann -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/mainServer.o mainServer.cpp
+	$(COMPILE.cc) -g -I/cygdrive/C/Users/Alice/Downloads/json-develop/single_include/nlohmann -I/cygdrive/C/Users/Alice/Downloads/json-develop/single_include/nlohmann -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/mainServer.o mainServer.cpp
 
 # Subprojects
 .build-subprojects:
