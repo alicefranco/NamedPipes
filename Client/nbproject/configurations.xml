@@ -45,6 +45,11 @@
         </ccTool>
       </compileType>
       <item path="mainClient.cpp" ex="false" tool="1" flavor2="0">
+        <ccTool>
+          <incDir>
+            <pElem>C:/Users/Alice/Downloads/json-develop/single_include/nlohmann</pElem>
+          </incDir>
+        </ccTool>
       </item>
     </conf>
     <conf name="Release" type="1">

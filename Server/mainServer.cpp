@@ -15,8 +15,8 @@
 #include <string>
 #include <windows.h>
 #include <thread>
-//#include <stack>
-#include <future>
+#include <stack>
+#include <vector>
 
 //other libs
 //#include <cstdlib>
@@ -34,8 +34,10 @@ LPDWORD bytesWritten = 0;
 LPCTSTR myPipe = TEXT("\\\\.\\pipe\\pipeline");
 LPCSTR pipeName = "\\\\.\\pipe\\pipeline";
 
-const int max_instances = 3;
+const int max_instances = 5;
 thread pipeThreads[max_instances];
+stack<int> threadStack;
+
 
 void serveClient(HANDLE h, int threadNumber){
     cout << "Serving client on thread " << threadNumber << "..."<< endl;
@@ -47,7 +49,7 @@ void serveClient(HANDLE h, int threadNumber){
     else cout << "Failed to read size message :(" << endl;
     
     
-    char m[300];
+    char m[1000];
     char * pm = m;
     bool readMessage = ReadFile(h, pm, b*sizeof(char), bytesRead, NULL);
     if(readMessage) cout << "Message read!" << endl;
@@ -75,7 +77,7 @@ void createHandles(){
     int i = 1;
     //for(int i = 0; i < 3; i++){  
     for(;;){
-        HANDLE h = CreateNamedPipe(myPipe, PIPE_ACCESS_DUPLEX, PIPE_TYPE_MESSAGE | PIPE_READMODE_MESSAGE | PIPE_WAIT, PIPE_UNLIMITED_INSTANCES, BUFFSIZE, BUFFSIZE, 0, NULL);
+        HANDLE h = CreateNamedPipe(myPipe, PIPE_ACCESS_DUPLEX, PIPE_TYPE_MESSAGE | PIPE_READMODE_MESSAGE | PIPE_WAIT, max_instances, BUFFSIZE, BUFFSIZE, 0, NULL);
         bool connected = false;
 
         if (h != INVALID_HANDLE_VALUE){
@@ -89,10 +91,14 @@ void createHandles(){
         }
         
         if (connected){
+            
             cout << "Creating thread..." << endl;
             //async(launch::async, serveClient, h, i);
-            pipeThreads[i] = thread(serveClient, h, i);
-            cout << "Working..." <<endl;
+            if(!threadStack.empty()){
+                int threadNumber = threadStack.top();
+                threadStack.pop();
+                pipeThreads[threadNumber] = thread(serveClient, h, threadNumber);
+            }
         }
         else{
             cout << "Failed to serve client... :(" << endl;
@@ -110,7 +116,14 @@ void createHandles(){
     
 }
 
+void initThreadStack(){
+     for(int i = 0; i < max_instances; i++){
+        threadStack.push(i);
+    }
+}
+ 
 int main(int argc, char** argv) {
+    initThreadStack();
     createHandles();
     return 0;
 }

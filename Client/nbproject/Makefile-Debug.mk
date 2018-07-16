@@ -65,7 +65,7 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/client.exe: ${OBJECTFILES}
 ${OBJECTDIR}/mainClient.o: mainClient.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/cygdrive/C/Users/Alice/Downloads/json-develop/single_include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/mainClient.o mainClient.cpp
+	$(COMPILE.cc) -g -I/cygdrive/C/Users/Alice/Downloads/json-develop/single_include/nlohmann -I/cygdrive/C/Users/Alice/Downloads/json-develop/single_include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/mainClient.o mainClient.cpp
 
 # Subprojects
 .build-subprojects:
